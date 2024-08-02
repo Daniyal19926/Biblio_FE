@@ -1,7 +1,27 @@
 import axios from "axios";
-
+const API_URL = "http://localhost:5557/api/categories";
 function getCategories() {
-  return axios.get("http://localhost:5557/api/categories/");
+  return axios.get(API_URL);
+}
+function getCategory(id: string) {
+  return axios.get(`${API_URL}/${id}`);
 }
 
-export default getCategories;
+function createCategory(body: any) {
+  return axios.post(`${API_URL}`, body);
+}
+
+function updateCategory(id: string, body: any) {
+  return axios.put(`${API_URL}/${id}`, body);
+}
+
+function deleteCategory(id: string) {
+  return axios.delete(`${API_URL}/${id}`);
+}
+export {
+  getCategories,
+  getCategory,
+  createCategory,
+  deleteCategory,
+  updateCategory,
+};

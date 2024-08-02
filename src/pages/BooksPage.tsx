@@ -1,10 +1,74 @@
+import { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
+import { Category } from "../types/Category";
+import { Book } from "../types/Book";
+import ListGroup from "../component/listGroup";
+import { getCategories } from "../Services/Categories";
+import { getBooks } from "../Services/Books";
 
 export default function BooksPage() {
+  const [Books, setBooks] = useState<Book[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, SetLoading] = useState(true);
+  useEffect(() => {
+    getBooks().then(({ data }) => setBooks(data));
+    getCategories().then(({ data }) => setCategories(data));
+    SetLoading(false);
+  }, []);
+  if (loading) {
+    <div>the page is Loading</div>;
+  }
   return (
-    <div>
+    <div className="">
       <Navbar />
-      <h1> books page</h1>
+      <button
+        onClick={() => console.log("new")}
+        className="btn btn-primary mt-2 ms-2"
+      >
+        Create
+      </button>
+
+      <div className="row p-0 container text-centre ">
+        <div className="col mt-5 ms-2 ">
+          <ListGroup categories={categories} />
+        </div>
+        <div className="col-10">
+          <table className="table ">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Type</th>
+                <th scope="col">Category Name</th>
+                <th scope="col">Author </th>
+                <th scope="col">is Borrowable</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {Books.map((book: Book) => (
+                <tr key={book.id}>
+                  <td>{book.title}</td>
+                  <td>{book.type}</td>
+                  <td>{book.category.name}</td>
+
+                  <td>{book.author}</td>
+
+                  <td>{book.isBorrowable ? "true" : "false"}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => console.log(book.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }

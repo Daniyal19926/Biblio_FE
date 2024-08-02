@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import getCategories from "./Services/Categories";
-import getBooks from "./Services/Books";
-import getReferenceBooks from "./Services/ReferenceBooks";
-import getAudioBooks from "./Services/AudioBooks";
-import getDvds from "./Services/Dvds";
+import { getCategories } from "./Services/Categories";
+import { getBooks } from "./Services/Books";
+import { getReferenceBooks } from "./Services/ReferenceBooks";
+import { getAudioBooks } from "./Services/AudioBooks";
+import { getDvds } from "./Services/Dvds";
 import { Category } from "./types/Category";
 import { Book } from "./types/Book";
 import { Dvd } from "./types/Dvd";
@@ -44,7 +44,7 @@ export default function App() {
       <div className=" p-4">
         <Navbar />
 
-        <div className="row p-0">
+        <div className="row p-0 container text-centre">
           <div className="col mt-5">
             <ListGroup categories={categories} />
           </div>

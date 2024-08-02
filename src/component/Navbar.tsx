@@ -1,38 +1,44 @@
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
   return (
     <div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
+          <Link className="navbar-brand" to="/">
             Library
-          </a>
+          </Link>
 
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
               <li className="nav-item">
-                <a className="nav-link " aria-current="page" href="/bookspage">
+                <Link
+                  className="nav-link "
+                  aria-current="page"
+                  to={"/bookspage"}
+                >
                   Books
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/dvdspage">
+                <Link className="nav-link" to={"/dvdspage"}>
                   Dvds
-                </a>
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link" href="/audiobookspage">
-                  audioBooks
-                </a>
+                <Link className="nav-link" to={"/audiobookspage"}>
+                  AudioBooks
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link " href="/referencebookspage">
-                  referenceBooks
-                </a>
+                <Link className="nav-link " to={"/referencebookspage"}>
+                  ReferenceBooks
+                </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link " aria-disabled="true">
+                <Link className="nav-link " to={"/"}>
                   Loan out
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

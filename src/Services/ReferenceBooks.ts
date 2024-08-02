@@ -1,7 +1,26 @@
 import axios from "axios";
+const API_URL = "http://localhost:5557/api/referencebooks";
 
 function getReferenceBooks() {
-  return axios.get("http://localhost:5557/api/referencebooks");
+  return axios.get(API_URL);
 }
 
-export default getReferenceBooks;
+function getReferenceBook(id: string) {
+  return axios.get(`${API_URL}/${id}`);
+}
+function createReferenceBook(body: any) {
+  return axios.post(API_URL, body);
+}
+function updateReferenceBook(id: string, body: any) {
+  return axios.put(`${API_URL}/${id}`, body);
+}
+function deleteReferenceBook(id: string) {
+  return axios.delete(`${API_URL}/${id}`);
+}
+export {
+  getReferenceBooks,
+  getReferenceBook,
+  createReferenceBook,
+  updateReferenceBook,
+  deleteReferenceBook,
+};
