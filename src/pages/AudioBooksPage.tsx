@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Navbar from "../component/Navbar";
-import { getAudioBooks } from "../Services/AudioBooks";
+import { deleteAudioBook, getAudioBooks } from "../Services/AudioBooks";
 import { Category } from "../types/Category";
 import { AudioBook } from "../types/AudioBook";
 import ListGroup from "../component/listGroup";
@@ -8,15 +8,22 @@ import { getCategories } from "../Services/Categories";
 export default function AudioBooksPage() {
   const [audioBooks, setAudioBooks] = useState<AudioBook[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, SetLoading] = useState(true);
+
   useEffect(() => {
     getAudioBooks().then(({ data }) => setAudioBooks(data));
     getCategories().then(({ data }) => setCategories(data));
-    SetLoading(false);
   }, []);
-  if (loading) {
-    <div>the page is Loading</div>;
+  async function handleDelete(id: string) {
+    const originalAudioBooks = audioBooks;
+    const newAudioBooks = audioBooks.filter((book) => book.id !== id);
+    setAudioBooks(newAudioBooks);
+    try {
+      await deleteAudioBook(id);
+    } catch (error) {
+      setAudioBooks(originalAudioBooks);
+    }
   }
+
   return (
     <div className="">
       <Navbar />
@@ -52,7 +59,7 @@ export default function AudioBooksPage() {
                   <td>
                     <button
                       className="btn btn-danger"
-                      onClick={() => console.log(audioBook.id)}
+                      onClick={() => handleDelete(audioBook.id)}
                     >
                       Delete
                     </button>

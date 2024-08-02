@@ -4,20 +4,31 @@ import { Category } from "../types/Category";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
 import { ReferenceBook } from "../types/ReferenceBook";
-import { getReferenceBooks } from "../Services/ReferenceBooks";
+import {
+  deleteReferenceBook,
+  getReferenceBooks,
+} from "../Services/ReferenceBooks";
 
 export default function ReferenceBooksPage() {
   const [referenceBooks, setReferenceBooks] = useState<ReferenceBook[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, SetLoading] = useState(true);
   useEffect(() => {
     getReferenceBooks().then(({ data }) => setReferenceBooks(data));
     getCategories().then(({ data }) => setCategories(data));
-    SetLoading(false);
   }, []);
-  if (loading) {
-    <div>the page is Loading</div>;
+  async function handleDelete(id: string) {
+    const originalReferenceBooks = referenceBooks;
+    const newReferenceBooks = referenceBooks.filter(
+      (referenceBook) => referenceBook.id !== id
+    );
+    setReferenceBooks(newReferenceBooks);
+    try {
+      await deleteReferenceBook(id);
+    } catch (error) {
+      setReferenceBooks(originalReferenceBooks);
+    }
   }
+
   return (
     <div className="">
       <Navbar />
@@ -58,7 +69,7 @@ export default function ReferenceBooksPage() {
                   <td>
                     <button
                       className="btn btn-danger"
-                      onClick={() => console.log(referenceBook.id)}
+                      onClick={() => handleDelete(referenceBook.id)}
                     >
                       Delete
                     </button>

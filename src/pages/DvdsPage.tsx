@@ -4,22 +4,28 @@ import { Category } from "../types/Category";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
 import { Dvd } from "../types/Dvd";
-import { getDvds } from "../Services/Dvds";
+import { deleteDvd, getDvds } from "../Services/Dvds";
 
 export default function DvdsPage() {
   const [dvds, setDvds] = useState<Dvd[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, SetLoading] = useState(true);
   useEffect(() => {
     getDvds().then(({ data }) => setDvds(data));
     getCategories().then(({ data }) => setCategories(data));
-    SetLoading(false);
   }, []);
-  if (loading) {
-    <div>the page is Loading</div>;
+  async function handleDelete(id: string) {
+    const originalDvds = dvds;
+    const newDvds = dvds.filter((dvd) => dvd.id !== id);
+    setDvds(newDvds);
+    try {
+      await deleteDvd(id);
+    } catch (error) {
+      setDvds(originalDvds);
+    }
   }
+
   return (
-    <div className="">
+    <div>
       <Navbar />
       <button className="btn btn-primary mt-2 ms-2">Create</button>
 
@@ -53,7 +59,7 @@ export default function DvdsPage() {
                   <td>
                     <button
                       className="btn btn-danger"
-                      onClick={() => console.log(dvd.id)}
+                      onClick={() => handleDelete(dvd.id)}
                     >
                       Delete
                     </button>

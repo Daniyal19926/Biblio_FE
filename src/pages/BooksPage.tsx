@@ -4,20 +4,26 @@ import { Category } from "../types/Category";
 import { Book } from "../types/Book";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
-import { getBooks } from "../Services/Books";
+import { deleteBook, getBooks } from "../Services/Books";
 
 export default function BooksPage() {
-  const [Books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, SetLoading] = useState(true);
   useEffect(() => {
     getBooks().then(({ data }) => setBooks(data));
     getCategories().then(({ data }) => setCategories(data));
-    SetLoading(false);
   }, []);
-  if (loading) {
-    <div>the page is Loading</div>;
+  async function handleDelete(id: string) {
+    const originalBooks = books;
+    const newBooks = books.filter((book) => book.id !== id);
+    setBooks(newBooks);
+    try {
+      await deleteBook(id);
+    } catch (error) {
+      setBooks(originalBooks);
+    }
   }
+
   return (
     <div className="">
       <Navbar />
@@ -46,7 +52,7 @@ export default function BooksPage() {
             </thead>
 
             <tbody>
-              {Books.map((book: Book) => (
+              {books.map((book: Book) => (
                 <tr key={book.id}>
                   <td>{book.title}</td>
                   <td>{book.type}</td>
@@ -57,8 +63,8 @@ export default function BooksPage() {
                   <td>{book.isBorrowable ? "true" : "false"}</td>
                   <td>
                     <button
+                      onClick={() => handleDelete(book.id)}
                       className="btn btn-danger"
-                      onClick={() => console.log(book.id)}
                     >
                       Delete
                     </button>
