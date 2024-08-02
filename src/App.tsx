@@ -10,6 +10,7 @@ import { Dvd } from "./types/Dvd";
 import { ReferenceBook } from "./types/ReferenceBook";
 import { AudioBook } from "./types/AudioBook";
 import Navbar from "./component/Navbar";
+import ListGroup from "./component/listGroup";
 
 export default function App() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -42,19 +43,10 @@ export default function App() {
     <div>
       <div className=" p-4">
         <Navbar />
+
         <div className="row p-0">
           <div className="col mt-5">
-            <ul className="list-group">
-              {categories.map((category: Category) => (
-                <li
-                  key={category.id}
-                  className="list-group-item "
-                  aria-current="true"
-                >
-                  {category.name}
-                </li>
-              ))}
-            </ul>
+            <ListGroup categories={categories} />
           </div>
           <div className="col-10">
             <table className="table">

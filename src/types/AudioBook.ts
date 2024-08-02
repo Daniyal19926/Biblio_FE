@@ -5,7 +5,7 @@ export interface AudioBook {
   title: string;
   runTimeMinutes: number;
   type: string;
-  isBorrowable?: Boolean;
+  isBorrowable: Boolean;
   borrowerId?: String;
   categoryId: string;
   category: Category;

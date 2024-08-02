@@ -2,8 +2,35 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "bootstrap/dist/css/bootstrap.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import BooksPage from "./pages/BooksPage.tsx";
+import AudioBooksPage from "./pages/AudioBooksPage.tsx";
+import ReferenceBooksPage from "./pages/ReferenceBooksPage.tsx";
+import DvdsPage from "./pages/DvdsPage.tsx";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/bookspage",
+    element: <BooksPage />,
+  },
+  {
+    path: "/audiobookspage",
+    element: <AudioBooksPage />,
+  },
+  {
+    path: "/referencebookspage",
+    element: <ReferenceBooksPage />,
+  },
+  {
+    path: "/dvdspage",
+    element: <DvdsPage />,
+  },
+]);
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
