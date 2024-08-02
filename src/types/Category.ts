@@ -6,7 +6,7 @@ import { ReferenceBook } from "./ReferenceBook";
 export interface Category {
   id: string;
   name: string;
-  audioBook: AudioBook[];
+  audiobook: AudioBook[];
   book: Book[];
   dvd: Dvd[];
   referenceBook: ReferenceBook[];

@@ -8,5 +8,6 @@ export interface Book {
   type: string;
   isBorrowable: Boolean;
   borrowerId?: string;
+  categoryId: string;
   category: Category;
 }

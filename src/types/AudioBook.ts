@@ -7,5 +7,6 @@ export interface AudioBook {
   type: string;
   isBorrowable?: Boolean;
   borrowerId?: String;
+  categoryId: string;
   category: Category;
 }

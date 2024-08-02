@@ -7,5 +7,6 @@ export interface Dvd {
   type: string;
   category: Category;
   isBorrowable: Boolean;
+  categoryId: string;
   borrowerId?: string;
 }
