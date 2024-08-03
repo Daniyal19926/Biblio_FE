@@ -19,7 +19,7 @@ const schema = z.object({
     message: "type can only be set as book,referenceBook,dvd,audioBook",
   }),
 });
-type BookFormData = z.infer<typeof schema>;
+type FormData = z.infer<typeof schema>;
 
 export default function ReferenceBookForm() {
   const [categories, setCategories] = useState([]);
@@ -38,7 +38,7 @@ export default function ReferenceBookForm() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<BookFormData>({
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange",
   });
