@@ -5,27 +5,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import { z } from "zod";
 import { getCategories } from "../../Services/Categories";
 import { Category } from "../../types/Category";
-import { createBook } from "../../Services/Books";
+import { createBook, getBook, updateBook } from "../../Services/Books";
 const schema = z.object({
   title: z.string().min(2),
   author: z.string().min(2),
   nbrPages: z.number({ invalid_type_error: "number of page must be a number" }),
-  categoryId: z.string().cuid(),
+  categoryId: z.string(),
   type: z.enum(["book", "dvd", "audioBook", "referenceBook"], {
     message: "type can only be set as book,referenceBook,dvd,audioBook",
   }),
-
-  borrowerName: z.string().optional(),
 });
-export type BookFormData = z.infer<typeof schema>;
+type BookFormData = z.infer<typeof schema>;
 
 export default function BookForm() {
   const [categories, setCategories] = useState([]);
+  const [book, setBook] = useState();
   const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     getCategories().then(({ data }) => setCategories(data));
+    if (!id || id === "new") return;
+    getBook(id).then(({ data }) => setBook(data));
   }, []);
 
   const {
@@ -37,10 +38,20 @@ export default function BookForm() {
     resolver: zodResolver(schema),
     mode: "onChange",
   });
+  useEffect(() => {
+    if (!id || id === "new") return;
+    reset(book);
+  }, [book]);
 
   async function onSubmit(data: FieldValues) {
-    await createBook(data);
-    navigate("/bookspage");
+    if (!id) return;
+    if (id === "new") {
+      await createBook(data);
+      navigate("/");
+    } else {
+      await updateBook(id, data);
+      navigate("/");
+    }
   }
   return (
     <div className="p-5">
@@ -86,24 +97,14 @@ export default function BookForm() {
           <label className="form-label">Type</label>
           <input {...register("type")} className="form-control" />
           {errors.type && <p className="text-danger">{errors.type.message}</p>}
+          <button
+            disabled={!isValid}
+            type="submit"
+            className="btn btn-primary mt-4"
+          >
+            Submit
+          </button>
         </div>
-        {id === "new" ? (
-          <></>
-        ) : (
-          <>
-            <div className="mb-3 w-50">
-              <label className="form-label">Borrower Name</label>
-              <input {...register("borrowerName")} className="form-control" />
-              {errors.borrowerName && (
-                <p className="text-danger">{errors.borrowerName.message}</p>
-              )}
-            </div>
-          </>
-        )}
-
-        <button disabled={!isValid} type="submit" className="btn btn-primary">
-          Submit
-        </button>
       </form>
     </div>
   );
