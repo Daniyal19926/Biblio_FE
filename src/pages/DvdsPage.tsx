@@ -6,6 +6,7 @@ import { getCategories } from "../Services/Categories";
 import { Dvd } from "../types/Dvd";
 import { deleteDvd, getDvds } from "../Services/Dvds";
 import { DEFAULT_CATEGORY } from "../App";
+import { Link } from "react-router-dom";
 
 export default function DvdsPage() {
   const [dvds, setDvds] = useState<Dvd[]>([]);
@@ -34,7 +35,9 @@ export default function DvdsPage() {
   return (
     <div>
       <Navbar />
-      <button className="btn btn-primary mt-2 ms-2">Create</button>
+      <Link to={"/dvdform/new"} className="btn btn-primary mt-2 ms-2">
+        Create
+      </Link>
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
@@ -60,7 +63,9 @@ export default function DvdsPage() {
             <tbody>
               {filteredDvds.map((dvd: Dvd) => (
                 <tr key={dvd.id}>
-                  <td>{dvd.title}</td>
+                  <td>
+                    <Link to={`/dvdform/${dvd.id}`}>{dvd.title}</Link>
+                  </td>
                   <td>{dvd.type}</td>
                   <td>{dvd.category.name}</td>
 
