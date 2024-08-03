@@ -5,13 +5,18 @@ import { Category } from "../types/Category";
 import { AudioBook } from "../types/AudioBook";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
+import { DEFAULT_CATEGORY } from "../App";
+
 export default function AudioBooksPage() {
   const [audioBooks, setAudioBooks] = useState<AudioBook[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
 
   useEffect(() => {
     getAudioBooks().then(({ data }) => setAudioBooks(data));
-    getCategories().then(({ data }) => setCategories(data));
+    getCategories().then(({ data }) =>
+      setCategories([DEFAULT_CATEGORY, ...data])
+    );
   }, []);
   async function handleDelete(id: string) {
     const originalAudioBooks = audioBooks;
@@ -23,7 +28,11 @@ export default function AudioBooksPage() {
       setAudioBooks(originalAudioBooks);
     }
   }
-
+  const filteredAudioBooks = selectedCategory
+    ? audioBooks.filter(
+        (audioBook) => audioBook.categoryId === selectedCategory
+      )
+    : audioBooks;
   return (
     <div className="">
       <Navbar />
@@ -31,7 +40,11 @@ export default function AudioBooksPage() {
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
-          <ListGroup categories={categories} />
+          <ListGroup
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
         <div className="col-10">
           <table className="table ">
@@ -47,7 +60,7 @@ export default function AudioBooksPage() {
             </thead>
 
             <tbody>
-              {audioBooks.map((audioBook: AudioBook) => (
+              {filteredAudioBooks.map((audioBook: AudioBook) => (
                 <tr key={audioBook.id}>
                   <td>{audioBook.title}</td>
                   <td>{audioBook.type}</td>

@@ -8,13 +8,17 @@ import {
   deleteReferenceBook,
   getReferenceBooks,
 } from "../Services/ReferenceBooks";
+import { DEFAULT_CATEGORY } from "../App";
 
 export default function ReferenceBooksPage() {
   const [referenceBooks, setReferenceBooks] = useState<ReferenceBook[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
   useEffect(() => {
     getReferenceBooks().then(({ data }) => setReferenceBooks(data));
-    getCategories().then(({ data }) => setCategories(data));
+    getCategories().then(({ data }) =>
+      setCategories([DEFAULT_CATEGORY, ...data])
+    );
   }, []);
   async function handleDelete(id: string) {
     const originalReferenceBooks = referenceBooks;
@@ -41,7 +45,11 @@ export default function ReferenceBooksPage() {
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
-          <ListGroup categories={categories} />
+          <ListGroup
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
         <div className="col-10">
           <table className="table ">

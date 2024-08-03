@@ -11,7 +11,11 @@ import { ReferenceBook } from "./types/ReferenceBook";
 import { AudioBook } from "./types/AudioBook";
 import Navbar from "./component/Navbar";
 import ListGroup from "./component/listGroup";
-
+import { Link } from "react-router-dom";
+export const DEFAULT_CATEGORY: Category = {
+  id: "",
+  name: "All Categories",
+};
 export default function App() {
   const [books, setBooks] = useState<Book[]>([]);
   const [dvds, setDvds] = useState<Dvd[]>([]);
@@ -19,9 +23,14 @@ export default function App() {
   const [audioBooks, setAudioBooks] = useState<AudioBook[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [libraryitems, setLibraryItems] = useState<any[]>([]);
+  const [libraryItems, setLibraryItems] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
+
   useEffect(() => {
-    getCategories().then(({ data }) => setCategories(data));
+    getCategories().then(({ data }) =>
+      setCategories([DEFAULT_CATEGORY, ...data])
+    );
+
     getBooks().then(({ data }) => setBooks(data));
     getReferenceBooks().then(({ data }) => setReferenceBooks(data));
     getAudioBooks().then(({ data }) => setAudioBooks(data));
@@ -35,18 +44,21 @@ export default function App() {
     }
   }, [books, audioBooks, dvds, referenceBooks, loading]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
       <div className=" p-4">
         <Navbar />
+        <Link to={"/categoryformpage"} className="btn btn-primary mt-2 ms-2">
+          Create Category
+        </Link>
 
         <div className="row p-0 container text-centre">
           <div className="col mt-5">
-            <ListGroup categories={categories} />
+            <ListGroup
+              categories={categories}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+            />
           </div>
           <div className="col-10">
             <table className="table">
@@ -58,7 +70,7 @@ export default function App() {
                 </tr>
               </thead>
               <tbody>
-                {libraryitems.map((libraryItem: any) => (
+                {libraryItems.map((libraryItem: any) => (
                   <tr key={libraryItem.id}>
                     <td>{libraryItem.title}</td>
                     <td>{libraryItem.type}</td>

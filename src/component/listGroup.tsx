@@ -1,14 +1,20 @@
-import { Category } from "../types/Category";
-
-export default function ListGroup({ categories }: any) {
+export default function ListGroup({
+  selectedCategory,
+  categories,
+  setSelectedCategory,
+}: any) {
   return (
     <div>
       <ul className="list-group">
-        {categories.map((category: Category) => (
+        {categories.map((category: any) => (
           <li
             key={category.id}
-            className="list-group-item "
-            aria-current="true"
+            onClick={() => {
+              setSelectedCategory(category.id);
+            }}
+            className={`list-group-item ${
+              selectedCategory === category.id ? "active" : ""
+            }`}
           >
             {category.name}
           </li>

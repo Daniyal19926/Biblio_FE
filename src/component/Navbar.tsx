@@ -35,11 +35,6 @@ export default function Navbar() {
                   ReferenceBooks
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link className="nav-link " to={"/"}>
-                  Loan out
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

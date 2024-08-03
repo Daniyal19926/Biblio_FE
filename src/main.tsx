@@ -7,6 +7,8 @@ import BooksPage from "./pages/BooksPage.tsx";
 import AudioBooksPage from "./pages/AudioBooksPage.tsx";
 import ReferenceBooksPage from "./pages/ReferenceBooksPage.tsx";
 import DvdsPage from "./pages/DvdsPage.tsx";
+import CategoriesFormPage from "./pages/CategoryFormPage.tsx";
+import BookForm from "./pages/Forms/BookForm.tsx";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +29,18 @@ const router = createBrowserRouter([
   {
     path: "/dvdspage",
     element: <DvdsPage />,
+  },
+  {
+    path: "/categoryformpage",
+    element: <CategoriesFormPage />,
+  },
+  {
+    path: "/categoryformpage/:id",
+    element: <CategoriesFormPage />,
+  },
+  {
+    path: "/bookform/:id",
+    element: <BookForm />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -5,13 +5,18 @@ import { Book } from "../types/Book";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
 import { deleteBook, getBooks } from "../Services/Books";
+import { DEFAULT_CATEGORY } from "../App";
+import { Link } from "react-router-dom";
 
 export default function BooksPage() {
   const [books, setBooks] = useState<Book[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
   useEffect(() => {
     getBooks().then(({ data }) => setBooks(data));
-    getCategories().then(({ data }) => setCategories(data));
+    getCategories().then(({ data }) =>
+      setCategories([DEFAULT_CATEGORY, ...data])
+    );
   }, []);
   async function handleDelete(id: string) {
     const originalBooks = books;
@@ -23,20 +28,24 @@ export default function BooksPage() {
       setBooks(originalBooks);
     }
   }
+  const filteredBooks = selectedCategory
+    ? books.filter((book) => book.categoryId === selectedCategory)
+    : books;
 
   return (
     <div className="">
       <Navbar />
-      <button
-        onClick={() => console.log("new")}
-        className="btn btn-primary mt-2 ms-2"
-      >
+      <Link to={"/bookform/new"} className="btn btn-primary mt-2 ms-2">
         Create
-      </button>
+      </Link>
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
-          <ListGroup categories={categories} />
+          <ListGroup
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
         <div className="col-10">
           <table className="table ">
@@ -52,9 +61,9 @@ export default function BooksPage() {
             </thead>
 
             <tbody>
-              {books.map((book: Book) => (
+              {filteredBooks.map((book: Book) => (
                 <tr key={book.id}>
-                  <td>{book.title}</td>
+                  <Link to={`/bookform/${book.id}`}>{book.title}</Link>
                   <td>{book.type}</td>
                   <td>{book.category.name}</td>
 

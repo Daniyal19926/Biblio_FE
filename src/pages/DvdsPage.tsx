@@ -5,13 +5,17 @@ import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
 import { Dvd } from "../types/Dvd";
 import { deleteDvd, getDvds } from "../Services/Dvds";
+import { DEFAULT_CATEGORY } from "../App";
 
 export default function DvdsPage() {
   const [dvds, setDvds] = useState<Dvd[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
   useEffect(() => {
     getDvds().then(({ data }) => setDvds(data));
-    getCategories().then(({ data }) => setCategories(data));
+    getCategories().then(({ data }) =>
+      setCategories([DEFAULT_CATEGORY, ...data])
+    );
   }, []);
   async function handleDelete(id: string) {
     const originalDvds = dvds;
@@ -23,6 +27,9 @@ export default function DvdsPage() {
       setDvds(originalDvds);
     }
   }
+  const filteredDvds = selectedCategory
+    ? dvds.filter((dvd) => dvd.categoryId === selectedCategory)
+    : dvds;
 
   return (
     <div>
@@ -31,7 +38,11 @@ export default function DvdsPage() {
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
-          <ListGroup categories={categories} />
+          <ListGroup
+            categories={categories}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
         </div>
         <div className="col-10">
           <table className="table ">
@@ -47,7 +58,7 @@ export default function DvdsPage() {
             </thead>
 
             <tbody>
-              {dvds.map((dvd: Dvd) => (
+              {filteredDvds.map((dvd: Dvd) => (
                 <tr key={dvd.id}>
                   <td>{dvd.title}</td>
                   <td>{dvd.type}</td>
