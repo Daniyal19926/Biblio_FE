@@ -29,6 +29,7 @@ export default function BookForm() {
   }, []);
 
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors, isValid },

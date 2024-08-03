@@ -63,7 +63,9 @@ export default function BooksPage() {
             <tbody>
               {filteredBooks.map((book: Book) => (
                 <tr key={book.id}>
-                  <Link to={`/bookform/${book.id}`}>{book.title}</Link>
+                  <td>
+                    <Link to={`/bookform/${book.id}`}>{book.title}</Link>
+                  </td>
                   <td>{book.type}</td>
                   <td>{book.category.name}</td>
 
