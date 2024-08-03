@@ -6,6 +6,7 @@ import { AudioBook } from "../types/AudioBook";
 import ListGroup from "../component/listGroup";
 import { getCategories } from "../Services/Categories";
 import { DEFAULT_CATEGORY } from "../App";
+import { Link } from "react-router-dom";
 
 export default function AudioBooksPage() {
   const [audioBooks, setAudioBooks] = useState<AudioBook[]>([]);
@@ -36,7 +37,9 @@ export default function AudioBooksPage() {
   return (
     <div className="">
       <Navbar />
-      <button className="btn btn-primary mt-2 ms-2">Create</button>
+      <Link to={"/audiobookform/new"} className="btn btn-primary mt-2 ms-2">
+        Create
+      </Link>
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
@@ -62,7 +65,11 @@ export default function AudioBooksPage() {
             <tbody>
               {filteredAudioBooks.map((audioBook: AudioBook) => (
                 <tr key={audioBook.id}>
-                  <td>{audioBook.title}</td>
+                  <td>
+                    <Link to={`/audiobookform/${audioBook.id}`}>
+                      {audioBook.title}
+                    </Link>
+                  </td>
                   <td>{audioBook.type}</td>
                   <td>{audioBook.category.name}</td>
 

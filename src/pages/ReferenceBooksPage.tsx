@@ -9,6 +9,7 @@ import {
   getReferenceBooks,
 } from "../Services/ReferenceBooks";
 import { DEFAULT_CATEGORY } from "../App";
+import { Link } from "react-router-dom";
 
 export default function ReferenceBooksPage() {
   const [referenceBooks, setReferenceBooks] = useState<ReferenceBook[]>([]);
@@ -32,16 +33,17 @@ export default function ReferenceBooksPage() {
       setReferenceBooks(originalReferenceBooks);
     }
   }
-
+  const filteredReferenceBooks = selectedCategory
+    ? referenceBooks.filter(
+        (referencebook) => referencebook.categoryId === selectedCategory
+      )
+    : referenceBooks;
   return (
     <div className="">
       <Navbar />
-      <button
-        onClick={() => console.log("new")}
-        className="btn btn-primary mt-2 ms-2"
-      >
+      <Link to={"/referencebookform/new"} className="btn btn-primary mt-2 ms-2">
         Create
-      </button>
+      </Link>
 
       <div className="row p-0 container text-centre ">
         <div className="col mt-5 ms-2 ">
@@ -65,9 +67,13 @@ export default function ReferenceBooksPage() {
             </thead>
 
             <tbody>
-              {referenceBooks.map((referenceBook: ReferenceBook) => (
+              {filteredReferenceBooks.map((referenceBook: ReferenceBook) => (
                 <tr key={referenceBook.id}>
-                  <td>{referenceBook.title}</td>
+                  <td>
+                    <Link to={`/referencebookform/${referenceBook.id}`}>
+                      {referenceBook.title}
+                    </Link>
+                  </td>
                   <td>{referenceBook.type}</td>
                   <td>{referenceBook.category.name}</td>
 
