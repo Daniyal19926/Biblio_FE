@@ -10,8 +10,8 @@ import { Dvd } from "./types/Dvd";
 import { ReferenceBook } from "./types/ReferenceBook";
 import { AudioBook } from "./types/AudioBook";
 import Navbar from "./component/Navbar";
-import ListGroup from "./component/listGroup";
 import { Link } from "react-router-dom";
+import SimpleListGroup from "./component/SimpleListGroup";
 export const DEFAULT_CATEGORY: Category = {
   id: "",
   name: "All Categories",
@@ -24,12 +24,9 @@ export default function App() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [libraryItems, setLibraryItems] = useState<any[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY.id);
 
   useEffect(() => {
-    getCategories().then(({ data }) =>
-      setCategories([DEFAULT_CATEGORY, ...data])
-    );
+    getCategories().then(({ data }) => setCategories(data));
 
     getBooks().then(({ data }) => setBooks(data));
     getReferenceBooks().then(({ data }) => setReferenceBooks(data));
@@ -48,17 +45,16 @@ export default function App() {
     <div>
       <div className=" p-4">
         <Navbar />
-        <Link to={"/categoryformpage"} className="btn btn-primary mt-2 ms-2">
+        <Link
+          to={"/categoryformpage/new"}
+          className="btn btn-primary mt-2 ms-2"
+        >
           Create Category
         </Link>
 
         <div className="row p-0 container text-centre">
           <div className="col mt-5">
-            <ListGroup
-              categories={categories}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-            />
+            <SimpleListGroup categories={categories} />
           </div>
           <div className="col-10">
             <table className="table">

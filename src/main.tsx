@@ -7,7 +7,7 @@ import BooksPage from "./pages/BooksPage.tsx";
 import AudioBooksPage from "./pages/AudioBooksPage.tsx";
 import ReferenceBooksPage from "./pages/ReferenceBooksPage.tsx";
 import DvdsPage from "./pages/DvdsPage.tsx";
-import CategoriesFormPage from "./pages/CategoryFormPage.tsx";
+import CategoriesForm from "./pages/Forms/CategoryFormPage.tsx";
 import BookForm from "./pages/Forms/BookForm.tsx";
 import ReferenceBookForm from "./pages/Forms/ReferenceBookForm.tsx";
 import AudioBookForm from "./pages/Forms/AudioBookForm.tsx";
@@ -35,11 +35,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/categoryformpage",
-    element: <CategoriesFormPage />,
+    element: <CategoriesForm />,
   },
   {
     path: "/categoryformpage/:id",
-    element: <CategoriesFormPage />,
+    element: <CategoriesForm />,
   },
   {
     path: "/bookform/:id",
