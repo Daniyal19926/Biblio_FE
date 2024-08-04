@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://https://biblio-be-2.onrender.com/api/categories";
+const API_URL = "https://biblio-be-2.onrender.com/api/categories";
 function getCategories() {
   return axios.get(API_URL);
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://https://biblio-be-2.onrender.com/api/dvds";
+const API_URL = "https://biblio-be-2.onrender.com/api/dvds";
 
 function getDvds() {
   return axios.get(API_URL);
