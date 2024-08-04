@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:5557/api/referencebooks";
+const API_URL = "http://https://biblio-be-2.onrender.com/api/referencebooks";
 
 function getReferenceBooks() {
   return axios.get(API_URL);
