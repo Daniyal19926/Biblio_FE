@@ -18,7 +18,6 @@ export default function CategoriesForm() {
   }, [category]);
 
   const {
-    reset,
     register,
     handleSubmit,
     formState: { errors, isValid },
